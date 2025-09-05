@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<Parameters>
+    <User>
+        <subSystem>Petclinic</subSystem>
+        <UserRole>SystemAdmin</UserRole>
+        <UserName>admin</UserName>
+        <UserLogin>admin</UserLogin>
+        <UserPassword>admin</UserPassword>
+        <GroupKK>Petclinic</GroupKK>
+        <UserEmail>test@petclinictest.ru</UserEmail>
+    </User>
+    <User>
+        <subSystem>Petclinic</subSystem>
+        <UserRole>user</UserRole>
+        <UserName>userjoy</UserName>
+        <UserLogin>joy</UserLogin>
+        <UserPassword>joy</UserPassword>
+        <GroupKK>Petclinic</GroupKK>
+        <UserEmail>test@petclinictest.ru</UserEmail>
+    </User>
+</Parameters>

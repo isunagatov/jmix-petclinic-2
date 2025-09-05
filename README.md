@@ -1,20 +1,46 @@
-![](src/main/resources/META-INF/resources/images/petclinic_logo_with_slogan.svg)
+## Исходное приложение
+Доступно на сайте разработчика https://demo.jmix.io/petclinic
 
-Jmix Petclinic is an example application built with Jmix framework. It is based on the commonly known [Spring Petclinic](https://github.com/spring-projects/spring-petclinic) example.
+#autotests
+Тесты web и rest
 
-## Online Demo
+#ссылка на тестируемый проект (форк с минимальными изменениями для тестирования rest-api)
+https://github.com/isunagatov/jmix-petclinic-2.git
 
-The Jmix Petclinic application is available online at https://demo.jmix.io/petclinic
+docker-compose для selenoid:
+/selenoid/docker-compose.yml /selenoid/browsers.json
 
-## Application Overview
+# локальный запуск тестируемого проекта
+Для старта приложения необходимы 
+1. Установленный PostgreSQL
+2. Установленный плагин jMix в iDea
+3. В application.properties указать DB pass
+4. При запуске база создастся
 
-Jmix Petclinic provides the following functionality:
+# Запуск автотестов
+Необходимо настроить test/resources/conf.xml :
 
-- Managing Pet Visits through a Calendar
-- Tracking Visit Treatments for Nurses
-- Creating Pets and Owners
-- Managing Nurses and Veterinarians of the Petclinic
+- указать **selenoid = false**, для запуска без selenoid proxy
+- <SubSystem> <url> указать url хоста приложения, по умолчанию localhost
 
-## Domain Model
-
-![](etc/domain-model.png)
+- Для связи с базой указать свои креды к базе
+   <code> \
+   \<DBconfig> \
+        <!--### connect database-->
+        \<subSystem>Petclinic</subSystem> \
+        \<databaseHost>**localhost:5432**</databaseHost> \
+        \<databaseName>**jmixpetclinic5**</databaseName> \
+        \<databaseUser>postgres</databaseUser> \
+        \<databasePass>**dbpass**</databasePass> - ваш пароль \
+    \</DBconfig> \
+	</code>
+- Для запуска через Selenoid указать его эндпоинт
+   - <selenoidUrl>**http://192.168.xx.xx**:4444/wd/hub</selenoidUrl>
+	 
+- Запуск selenoid из каталога проекта selenoid (необходим установленный docker) 
+   - **docker-compose up -d**
+	
+- Запуск автотестов в терминале задачей gradle
+   - **gradle testNG**
+- Запуск добавлением конфигурацию запуска через TestNG для выбранного метода/класса
+   - для UI добавить в VM options значение: **-ea -Dtestng.dtd.http=true**

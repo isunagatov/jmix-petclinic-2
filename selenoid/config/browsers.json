@@ -1,0 +1,24 @@
+{
+  "chrome": {
+    "default": "latest",
+    "versions": {
+      "latest": {
+        "image": "selenoid/chrome:latest",
+        "port": "4444",
+        "vnc": true,
+        "path": "/",
+        "video": true,
+        "video-recorder-image": "selenoid/video-recorder:latest-release",
+        "selenoid:options":{
+           "enableVNC": true,
+           "enableLog": true,
+           "enableVideo": true
+        },
+        "videoRecording":{
+        "enabled": true,
+        "saveToDisk": true
+        }
+      }
+    }
+  }
+}

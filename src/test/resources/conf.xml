@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<Parameters>
+    <DBconfig>
+        <!--### connect database-->
+        <subSystem>Petclinic</subSystem>
+        <databaseHost>localhost:5432</databaseHost>
+        <databaseName>jmixpetclinic5</databaseName>
+        <databaseUser>postgres</databaseUser>
+        <databasePass>dbpass**</databasePass>
+    </DBconfig>
+    <SubSystem>
+        <subSystemName>Petclinic</subSystemName>
+        <url>http://localhost:8081/petclinic</url>
+        <client>zyoclxrxuh</client>
+        <secret>QjspRuRGPl</secret>
+    </SubSystem>
+    <TestConfiguration>
+        <TestDataFile>testdata.xml</TestDataFile>
+        <checkAndRestorePasswords>false</checkAndRestorePasswords>
+        <selenoid>false</selenoid>
+        <ignoreUiSSL>false</ignoreUiSSL>
+        <ignoreRestSSL>false</ignoreRestSSL>
+        <selenoidUrl>http://localhost:4444/wd/hub</selenoidUrl> //UI: http://selenoid.company.ru:8081
+    </TestConfiguration>
+
+</Parameters>

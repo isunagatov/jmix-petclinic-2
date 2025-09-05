@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Test suite for Petclinic" verbose="1" parallel="classes" thread-count="3">
+    <!--<parameter name="urlApp"  value="http://*****/***/"/> -->
+    <test name="Tests">
+        <classes>
+            <class name ="tests.petclinic.LoginTest"/>
+            <class name ="tests.petclinic.PetsTest"/>
+            <class name ="tests.petclinic.RestApiTests"/>
+        </classes>
+    </test>
+</suite>

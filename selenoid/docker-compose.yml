@@ -1,0 +1,52 @@
+services:
+  selenoid:
+    image: aerokube/selenoid:latest
+    container_name: selenoid
+    network_mode: bridge
+    ports:
+      - "4444:4444"
+    environment:
+      - OVERRIDE_VIDEO_OUTPUT_DIR=/opt/selenoid/video
+      - SELENOID_VIDEO_RECORDING=TRUE
+      - SELENOID_VIDEO_SAVE=TRUE
+      - VIDEOS_DIR=/home/selenoid/video
+      - LOGS_DIR=/home/selenoid/logs
+    volumes:
+      - "./browsers.json:/etc/selenoid/browsers.json"
+      - "/run/docker.sock:/var/run/docker.sock"
+      - "./config/:/etc/selenoid/:ro"
+      - "./video/:/opt/selenoid/video/"
+    command: ["-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video"]
+    #networks: 
+     # - selenoid-network
+
+  selenoid-ui:
+    image: aerokube/selenoid-ui:latest
+    container_name: selenoid-ui
+    network_mode: bridge
+    ports:
+      - "8080:8080"
+    environment:
+      - SELENOID_URL=http://selenoid:4444
+      - VIDEO_DIR=/home/selenoid/video
+    volumes:
+      - ./video:/home/selenoid/video
+    command: -selenoid-uri 'http://selenoid:4444'  
+    depends_on:
+      - selenoid
+   # networks: 
+   #   - selenoid-network
+
+  chrome:
+    image: selenoid/chrome:latest
+    container_name: selenoid-chrome
+    network_mode: bridge
+    depends_on:
+      - selenoid
+   # networks: 
+   #   - selenoid-network
+      
+#networks:  # Определение сети
+ # selenoid-network:
+ #   driver: bridge  # Тип драйвера сети (по умолчанию bridge)
+ #   name: selenoid-network  # Имя сети (опционально)
