@@ -2,13 +2,19 @@ package tests.petclinic;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.mockito.internal.invocation.mockref.MockStrongReference;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import utils.RestApiJMix;
 import utils.TestData;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RestApiTests {
     @Test(description = "Получение токена доступа api")
@@ -20,6 +26,34 @@ public class RestApiTests {
     public static void getUsers() throws Exception {
         SoftAssert sa = new SoftAssert();
         JSONArray jsa = RestApiJMix.getUsers();
+        sa.assertTrue(jsa.length()>1, "Получено пользователей больше 1го: " + jsa.length() + ".");
+        JSONObject jso1 =  RestApiJMix.getObjectFromArray(0, jsa);
+        System.out.println("First user: " + jso1.get("username"));
+        sa.assertAll();
+    }
+    @Test(description = "Получение пользователя, преобразование в объекты, фильтр stream api")
+    public static void getUsersSteamApi() throws Exception {
+        SoftAssert sa = new SoftAssert();
+        JSONArray jsa = RestApiJMix.getUsers();
+        List<TestData.UserClass.User> listUsers = new ArrayList<>();
+
+        for (int i = 0; i < jsa.length(); i++) {
+            TestData.UserClass.User currentUser = new TestData.UserClass.User();
+            JSONObject jso = (JSONObject) jsa.get(i);
+            currentUser.setUserLogin((String) jso.get("username"));
+
+            String firstName = Optional.ofNullable(jso.optString("firstName"))
+                    .orElse(null);
+            String lastName = Optional.ofNullable(jso.optString("lastName")).orElse(null);
+
+            currentUser.setUserName( firstName != null && lastName != null ? firstName + " " + lastName : null);
+            currentUser.setId((String) jso.get("id"));
+            listUsers.add(currentUser);
+        }
+        List<TestData.UserClass.User> lu2 = listUsers.stream().filter(u -> u.getUserName().contains("auto")).toList();
+        System.out.println("В системе уже '" + lu2.size() + "' пользователей auto");
+
+
         sa.assertTrue(jsa.length()>1, "Получено пользователей больше 1го: " + jsa.length() + ".");
         JSONObject jso1 =  RestApiJMix.getObjectFromArray(0, jsa);
         System.out.println("First user: " + jso1.get("username"));
@@ -64,5 +98,6 @@ public class RestApiTests {
             Assert.fail( "Результатов или больше или меньше 1: " + len + " .");
         }
     }
+
 
 }
