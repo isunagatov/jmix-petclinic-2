@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class TestData extends TestBase {
@@ -28,6 +29,18 @@ public class TestData extends TestBase {
             }
             System.err.print("Пользователь с ролью: " + Role + " не найден в testdata.xml User.UserRole");
             return null;
+        }
+
+        public static User getUserByRoleStream(String SubSystem, String Role) {
+            List<User> userList = getListUser();
+            assert userList != null;
+            List<User> usList = userList.stream().filter(u -> u.getUserRole().contains(Role)).collect(Collectors.toList());
+            if(usList.size()>0){
+                return  usList.getFirst();
+            }else {
+                System.err.print("Пользователь с ролью: " + Role + " не найден в testdata.xml User.UserRole");
+                return  null;
+            }
         }
 
         public static User getUser(Node node) {

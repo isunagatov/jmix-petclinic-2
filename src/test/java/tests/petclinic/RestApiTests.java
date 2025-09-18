@@ -2,7 +2,6 @@ package tests.petclinic;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.mockito.internal.invocation.mockref.MockStrongReference;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -13,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class RestApiTests {
     @Test(description = "Получение токена доступа api")
@@ -31,7 +28,7 @@ public class RestApiTests {
         System.out.println("First user: " + jso1.get("username"));
         sa.assertAll();
     }
-    @Test(description = "Получение пользователя, преобразование в объекты, фильтр stream api")
+    @Test(description = "Получение пользователя, преобразование json в объекты, фильтр stream api")
     public static void getUsersSteamApi() throws Exception {
         SoftAssert sa = new SoftAssert();
         JSONArray jsa = RestApiJMix.getUsers();
@@ -88,7 +85,7 @@ public class RestApiTests {
 
     @Test(groups = "negative", description = "Негативный. Поиск пользователя")
     public static void searchUserNegative() throws Exception {
-        TestData.UserClass.User user = TestData.UserClass.getUserByRole("Petclinic", "SystemAdmin");
+        TestData.UserClass.User user = TestData.UserClass.getUserByRoleStream("Petclinic", "SystemAdmin");
         JSONArray result = RestApiJMix.searchUser(user,"username", "no_login");
         int len = result.length();
         if(len==1){

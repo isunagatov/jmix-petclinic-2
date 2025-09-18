@@ -408,21 +408,17 @@ public class ReadConfig {
 
         public static Browser getBrowserByNameByOs(String browserName, String osName) {
             List<Browser> browsers = getListBrowser();
-            for (Browser browser : browsers) {
-                if (browser.getName().contains(browserName) && browser.getOsName().contains(osName)) {
-                    return browser;
-                }
-            }
-            return null;
+            return browsers.stream().filter(b -> b.getName().contains(browserName))
+                    .filter(b -> b.getOsName().contains(osName))
+                    .findFirst()
+                    .orElse(null);
         }
+
         public static Browser getBrowserByName(String browserName) {
             List<Browser> browsers = getListBrowser();
-            for (Browser browser : browsers) {
-                if (browser.getName().contains(browserName)) {
-                    return browser;
-                }
-            }
-            return null;
+            return browsers.stream().filter(b -> b.getName().contains(browserName))
+                    .findFirst()
+                    .orElse(null);
         }
     }
 
