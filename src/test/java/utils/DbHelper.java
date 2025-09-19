@@ -123,4 +123,41 @@ public class DbHelper {
         }
     }
 
+    public static class UsersCheck{
+        public static TestData.UserClass.User getUserByUserLogin(TestData.UserClass.User o) throws SQLException {
+            Connection connection = getConnection(ReadConfig.DataBase.getDbBySubSystem("Petclinic"));
+            PreparedStatement stmt = connection.prepareStatement(
+                    "select pu.id as id, pu.username as username, pu.first_name as firstname, pu.last_name as lastname, pu.email as email\n" +
+                            "from petclinic_user pu \n" +
+                            "where username = ?", new String[]{"id"});
+            stmt.setString(1, o.getUserLogin());
+
+            TestData.UserClass.User userDB = new TestData.UserClass.User();
+            try {
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    userDB.setId(rs.getString("id"));
+                    System.out.println("User id: " + userDB.getId());
+
+                    userDB.setUserLogin(rs.getString("username"));
+                    System.out.println("UserName: " + userDB.getUserLogin());
+
+                    String firstname = rs.getString("firstname");
+                    String lastname = rs.getString("lastname");
+                    userDB.setUserName(firstname + " " + lastname);
+                    System.out.println("User firstanme + lastname: " + firstname + " " + lastname );
+
+                    userDB.setEmail(rs.getString("email"));
+                    System.out.println("Email: " + userDB.getEmail());
+                }
+                rs.close();
+                stmt.close();
+                return userDB;
+            } catch (SQLException e) {
+                System.out.println("User отсутствует:" + o.getUserLogin());
+                stmt.close();
+                return null;
+            }
+        }
+    }
 }

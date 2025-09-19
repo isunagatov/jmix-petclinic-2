@@ -15,6 +15,8 @@ import static utils.TestData.UserClass.getListUser;
 public class LoginTest extends TestBase {
     @Test(enabled = true, description = "Авторизация по Логину/паролю.")
     public void login() throws MalformedURLException {
+        TestData.UserClass.UserService usserv = new TestData.UserClass.DefaultUserService();
+        usserv.createUser(new TestData.UserClass.User());
         String testName = "Авторизация по Логину/паролю.";
         TestBase.openUrl(testName);
         LoginPage.login("user");
@@ -32,7 +34,7 @@ public class LoginTest extends TestBase {
         Selenide.sleep(1000);
     }
     @DataProvider(name = "users")
-    public static TestData.UserClass.User[] usersDataProvider(){
+    public TestData.UserClass.User[] usersDataProvider(){
         List<TestData.UserClass.User> arUser = getListUser();
         TestData.UserClass.User[] objUser = new TestData.UserClass.User[arUser.size()];
         for(int i = 0; i<arUser.size(); i++){
