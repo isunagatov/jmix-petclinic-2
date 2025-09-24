@@ -28,7 +28,7 @@ public class LoginPage extends TestBase {
         checkErrorAuth();
     }
     @Step("Авторизация по логину")
-    public static void login(TestData.UserClass.User user){
+    public static void login(TestData.User user){
         step("Заполнить поле Логин значением: " + user.getUserLogin() + " .");
         LoginPage.userNameField.setValue(user.getUserLogin());
         LoginPage.passwordField.click();
@@ -46,7 +46,7 @@ public class LoginPage extends TestBase {
     }
     @Step("Авторизация по логину")
     public static void login(String UserRoleName){
-        TestData.UserClass.User User = TestData.UserClass.getUserByRole("Petclinic", UserRoleName);
+        TestData.User User = TestData.getUserByRole("Petclinic", UserRoleName);
         login(User);
         checkErrorAuth();
     }

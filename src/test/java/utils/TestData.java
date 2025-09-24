@@ -20,7 +20,7 @@ public class TestData extends TestBase {
     public static String filename = ReadConfig.TestConfigurationClass.getTestConfiguration().getTestDataFile();
 
     //Users
-    public class UserClass {
+    //public class UserClass {
 
         public class User {
             private String SubSystem;
@@ -105,6 +105,7 @@ public class TestData extends TestBase {
         }
         //###########
 
+        @Deprecated
         public static User getUserByRole(String SubSystem, String Role) {
             List<User> userList = getListUser();
             for (User user : userList) {
@@ -225,7 +226,7 @@ public class TestData extends TestBase {
                 NodeList nodeList = document.getElementsByTagName("User");
                 List<User> paramList = new ArrayList<User>();
                 for (int i = 0; i < nodeList.getLength(); i++) {
-                    paramList.add(getUser(nodeList.item(i)));
+                    paramList.add(new TestData().getUser(nodeList.item(i)));
                 }
                 for (User param : paramList) {
                     //System.out.println(param.toString());
@@ -239,7 +240,7 @@ public class TestData extends TestBase {
         }
 
 
-    }
+    //} //Users class
 
     //DocumentBuilder builder;
     // get value elements by tag

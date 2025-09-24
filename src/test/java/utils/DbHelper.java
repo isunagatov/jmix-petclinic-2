@@ -124,7 +124,7 @@ public class DbHelper {
     }
 
     public static class UsersCheck{
-        public static TestData.UserClass.User getUserByUserLogin(TestData.UserClass.User o) throws SQLException {
+        public static TestData.User getUserByUserLogin(TestData.User o) throws SQLException {
             Connection connection = getConnection(ReadConfig.DataBase.getDbBySubSystem("Petclinic"));
             PreparedStatement stmt = connection.prepareStatement(
                     "select pu.id as id, pu.username as username, pu.first_name as firstname, pu.last_name as lastname, pu.email as email\n" +
@@ -132,7 +132,7 @@ public class DbHelper {
                             "where username = ?", new String[]{"id"});
             stmt.setString(1, o.getUserLogin());
 
-            TestData.UserClass.User userDB = new TestData.UserClass.User();
+            TestData.User userDB = new TestData().new User();
             try {
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {

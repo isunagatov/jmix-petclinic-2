@@ -32,10 +32,10 @@ public class RestApiTests {
     public static void getUsersSteamApi() throws Exception {
         SoftAssert sa = new SoftAssert();
         JSONArray jsa = RestApiJMix.getUsers();
-        List<TestData.UserClass.User> listUsers = new ArrayList<>();
+        List<TestData.User> listUsers = new ArrayList<>();
 
         for (int i = 0; i < jsa.length(); i++) {
-            TestData.UserClass.User currentUser = new TestData.UserClass.User();
+            TestData.User currentUser = new TestData().new User();
             JSONObject jso = (JSONObject) jsa.get(i);
             currentUser.setUserLogin((String) jso.get("username"));
 
@@ -47,7 +47,7 @@ public class RestApiTests {
             currentUser.setId((String) jso.get("id"));
             listUsers.add(currentUser);
         }
-        List<TestData.UserClass.User> lu2 = listUsers.stream().filter(u -> u.getUserName().contains("auto")).toList();
+        List<TestData.User> lu2 = listUsers.stream().filter(u -> u.getUserName().contains("auto")).toList();
         System.out.println("В системе уже '" + lu2.size() + "' пользователей auto");
 
 
@@ -59,7 +59,7 @@ public class RestApiTests {
     @Test(description = "Создание пользователя")
     public static void createUser() throws Exception {
         SoftAssert sa = new SoftAssert();
-        TestData.UserClass.User user = new TestData.UserClass.User();
+        TestData.User user = new TestData().new User();
         String suffix = UUID.randomUUID().toString().substring(0,5);
         user.setUserLogin("testUser_" + suffix);
         user.setUserName("TestCreateUserAt"+suffix);
@@ -71,7 +71,7 @@ public class RestApiTests {
     }
     @Test(description = "Поиск пользователя")
     public static void searchUser() throws Exception {
-        TestData.UserClass.User user = TestData.UserClass.getUserByRole("Petclinic", "SystemAdmin");
+        TestData.User user = TestData.getUserByRoleStream("Petclinic", "SystemAdmin");
         JSONArray result = RestApiJMix.searchUser(user,"username", user.getUserLogin());
         int len = result.length();
         if(len==1){
@@ -85,7 +85,7 @@ public class RestApiTests {
 
     @Test(groups = "negative", description = "Негативный. Поиск пользователя")
     public static void searchUserNegative() throws Exception {
-        TestData.UserClass.User user = TestData.UserClass.getUserByRoleStream("Petclinic", "SystemAdmin");
+        TestData.User user = TestData.getUserByRoleStream("Petclinic", "SystemAdmin");
         JSONArray result = RestApiJMix.searchUser(user,"username", "no_login");
         int len = result.length();
         if(len==1){

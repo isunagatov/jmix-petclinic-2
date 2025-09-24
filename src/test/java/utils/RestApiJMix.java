@@ -90,7 +90,7 @@ public class RestApiJMix {
         }else return jso;
     }
     @Step("Create User. Создание пользователя")
-    public static JSONObject newUser(TestData.UserClass.User user) throws Exception{
+    public static JSONObject newUser(TestData.User user) throws Exception{
         ReadConfig.SubSystemClass.SubSystem system = ReadConfig.SubSystemClass.getSubSystem();
         String source1 = system.getUrl() + "/rest/entities/User";
         HttpClient client;
@@ -108,7 +108,7 @@ public class RestApiJMix {
         jsonBody.put("active", "true");
         jsonBody.put("firstName", "_auto");
         jsonBody.put("lastName", "test " + user.getUserName());
-        jsonBody.put("password", "test " + "{noop}admin");
+        jsonBody.put("password","{noop}admin");
 
         StringEntity strEnt = new StringEntity(jsonBody.toString());
         post.setEntity(strEnt);
@@ -129,7 +129,7 @@ public class RestApiJMix {
         return jso;
     }
     @Step("Search User Поиск пользователя")
-    public static JSONArray searchUser(TestData.UserClass.User user, String propertyName, String searchValue) throws Exception{
+    public static JSONArray searchUser(TestData.User user, String propertyName, String searchValue) throws Exception{
         ReadConfig.SubSystemClass.SubSystem system = ReadConfig.SubSystemClass.getSubSystem();
         String source1 = system.getUrl() + "/rest/entities/User/search";
         HttpClient client;
