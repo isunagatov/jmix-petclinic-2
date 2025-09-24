@@ -1,5 +1,6 @@
 package tests.api;
 
+import POJO.User;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
@@ -11,10 +12,15 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import utils.ReadConfig;
 
-import java.util.Base64;
+import com.fasterxml.jackson.databind.ObjectMapper; // version 2.11.1
+import com.fasterxml.jackson.annotation.JsonProperty; // version 2.11.1
 
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.testng.Assert.*;
 
 public class RATest {
     public static final String BASE_URL = ReadConfig.SubSystemClass.getSubSystem().getUrl();
@@ -62,24 +68,39 @@ public class RATest {
     }
 
     @Test
-    public static void getUsers() throws Exception {
+    public static void getUsers()  {
         SoftAssert sa = new SoftAssert();
         ResponseBody rb = getUsersArr();
-        rb.jsonPath().getString("user");
-        sa.assertTrue(rb.jsonPath().getString("username").contains("admin"), "пользователи в базе есть");
+        String respJsonAsString = rb.asString();
+        User[] userFromJson;
+        try {
+            ObjectMapper om = new ObjectMapper();
+
+            userFromJson = om.readValue(respJsonAsString, User[].class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        List<User> userAdmin = Arrays.stream(userFromJson).filter(x -> x.getUserName().equals("admin")).toList();
+        Assert.assertTrue(userAdmin.size()==1, "пользователя admin в базе нет");
+
         sa.assertAll();
     }
 
-    public static ResponseBody getUsersArr() throws Exception{
-        Response response = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .header(new Header("Authorization", "Bearer " + accessToken))
-                .header(new Header("Content-Type", "application/json"))
-                .when()
-                .get(USERS_ENDPOINT)
-                .then()
-                .extract()
-                .response();
-        return response.getBody();
+    public static ResponseBody getUsersArr(){
+        try {
+            Response response = RestAssured.given()
+                    .contentType(ContentType.JSON)
+                    .header(new Header("Authorization", "Bearer " + accessToken))
+                    .header(new Header("Content-Type", "application/json"))
+                    .when()
+                    .get(USERS_ENDPOINT)
+                    .then()
+                    .extract()
+                    .response();
+            return response.getBody();
+        }catch (Exception e){
+            Assert.fail(e.getMessage());
+            return null;
+        }
     }
 }

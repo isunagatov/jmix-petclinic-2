@@ -1,5 +1,6 @@
 package pages;
 
+import POJO.User;
 import com.codeborne.selenide.*;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -28,7 +29,7 @@ public class LoginPage extends TestBase {
         checkErrorAuth();
     }
     @Step("Авторизация по логину")
-    public static void login(TestData.User user){
+    public static void login(User user){
         step("Заполнить поле Логин значением: " + user.getUserLogin() + " .");
         LoginPage.userNameField.setValue(user.getUserLogin());
         LoginPage.passwordField.click();
@@ -46,7 +47,7 @@ public class LoginPage extends TestBase {
     }
     @Step("Авторизация по логину")
     public static void login(String UserRoleName){
-        TestData.User User = TestData.getUserByRole("Petclinic", UserRoleName);
+        User User = TestData.getUserByRole("Petclinic", UserRoleName);
         login(User);
         checkErrorAuth();
     }

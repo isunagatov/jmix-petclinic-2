@@ -1,7 +1,7 @@
 package tests.petclinic;
 
+import POJO.User;
 import com.codeborne.selenide.Selenide;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.LoginPage;
@@ -25,7 +25,7 @@ public class LoginTest extends TestBase {
         Selenide.sleep(1000);
     }
     @Test(dataProvider = "users", description = "Авторизация по Логину/паролю. DataProvider")
-    public void loginDP(TestData.User user) throws MalformedURLException {
+    public void loginDP(User user) throws MalformedURLException {
         String testName = "Базовый тест. Авторизация по Логину/паролю.";
         TestBase.openUrl(testName + user.getUserLogin());
         LoginPage.login(user);
@@ -34,9 +34,9 @@ public class LoginTest extends TestBase {
         Selenide.sleep(1000);
     }
     @DataProvider(name = "users")
-    public TestData.User[] usersDataProvider(){
-        List<TestData.User> arUser = TestData.getListUser();
-        TestData.User[] objUser = new TestData.User[arUser.size()];
+    public User[] usersDataProvider(){
+        List<User> arUser = TestData.getListUser();
+        User[] objUser = new User[arUser.size()];
         for(int i = 0; i<arUser.size(); i++){
             objUser[i] = arUser.get(i);
         }
@@ -47,7 +47,7 @@ public class LoginTest extends TestBase {
     public void loginNegative() throws MalformedURLException {
         String testName = "Негативный тест. Авторизация по Логину/паролю.";
         TestBase.openUrl(testName);
-        TestData.User user = new TestData().new User();
+        User user = new User();
         user.setUserLogin("user1");
         user.setUserPassword("password");
         user.setUserName("user1");

@@ -1,5 +1,6 @@
 package utils;
 
+import POJO.User;
 import io.qameta.allure.Step;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -90,7 +91,7 @@ public class RestApiJMix {
         }else return jso;
     }
     @Step("Create User. Создание пользователя")
-    public static JSONObject newUser(TestData.User user) throws Exception{
+    public static JSONObject newUser(User user) throws Exception{
         ReadConfig.SubSystemClass.SubSystem system = ReadConfig.SubSystemClass.getSubSystem();
         String source1 = system.getUrl() + "/rest/entities/User";
         HttpClient client;
@@ -129,7 +130,7 @@ public class RestApiJMix {
         return jso;
     }
     @Step("Search User Поиск пользователя")
-    public static JSONArray searchUser(TestData.User user, String propertyName, String searchValue) throws Exception{
+    public static JSONArray searchUser(User user, String propertyName, String searchValue) throws Exception{
         ReadConfig.SubSystemClass.SubSystem system = ReadConfig.SubSystemClass.getSubSystem();
         String source1 = system.getUrl() + "/rest/entities/User/search";
         HttpClient client;

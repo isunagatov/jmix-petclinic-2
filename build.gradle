@@ -97,6 +97,7 @@ dependencies {
     testImplementation group: 'org.apache.commons', name: 'commons-vfs2', version: '2.10.0'
 
     implementation 'io.rest-assured:rest-assured:5.5.5'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
 }
 
 configurations.implementation {
